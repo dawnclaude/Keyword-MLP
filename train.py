@@ -17,6 +17,7 @@ import os
 import yaml
 import random
 import time
+from torchsummary import summary
 
 
 def training_pipeline(config):
@@ -63,6 +64,7 @@ def training_pipeline(config):
     model = get_model(config["hparams"]["model"])
     model = model.to(config["hparams"]["device"])
     print(f"Created model with {count_params(model)} parameters.")
+    summary(model, (1,config["hparams"]["audio"]["n_mels"],98),device='cuda')
 
     # loss
     if config["hparams"]["l_smooth"]:
