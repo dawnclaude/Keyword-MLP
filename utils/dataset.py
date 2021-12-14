@@ -145,8 +145,14 @@ class GoogleSpeechDataset(Dataset):
             # Spectrogram
             ###################
         
-            x = librosa.feature.melspectrogram(y=x, **self.audio_settings)        
-            x = librosa.feature.mfcc(S=librosa.power_to_db(x), n_mfcc=self.audio_settings["n_mels"])
+            x = librosa.feature.melspectrogram(y=x, **self.audio_settings)
+            x = librosa.power_to_db(x, ref=np.max)
+            x = x - np.amin(x)
+            if np.amax(np.abs(x)) > 0:
+                x = x/np.amax(x)
+            else:
+                x = x*0
+            #x = librosa.feature.mfcc(S=librosa.power_to_db(x), n_mfcc=self.audio_settings["n_mels"])
 
 
         if self.aug_settings is not None:
@@ -161,8 +167,14 @@ def cache_item_loader(path: str, sr: int, cache_level: int, audio_settings: dict
     x = librosa.load(path, sr)[0]
     if cache_level == 2:
         x = librosa.util.fix_length(x, sr)
-        x = librosa.feature.melspectrogram(y=x, **audio_settings)        
-        x = librosa.feature.mfcc(S=librosa.power_to_db(x), n_mfcc=audio_settings["n_mels"])
+        x = librosa.feature.melspectrogram(y=x, **audio_settings)     
+        x = librosa.power_to_db(x, ref=np.max)
+        x = x - np.amin(x)
+        if np.amax(np.abs(x)) > 0:
+            x = x/np.amax(x)
+        else:
+            x = x*0
+        #x = librosa.feature.mfcc(S=librosa.power_to_db(x), n_mfcc=audio_settings["n_mels"])
     return x
 
 
