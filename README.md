@@ -1,6 +1,6 @@
 # Keyword-MLP
 
-Official PyTorch implementation of [*Attention-Free Keyword Spotting*](https://arxiv.org/abs/2110.07749v1).
+Forked from :  [*AI-Research-BD/Keyword-MLP*](https://github.com/AI-Research-BD/Keyword-MLP).
 
 <img src="resources/kw-mlp.png" alt="Keyword-MLP Architecture" width="400"/>
 
