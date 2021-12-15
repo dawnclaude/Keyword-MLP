@@ -148,7 +148,8 @@ class GoogleSpeechDataset(Dataset):
             x = librosa.feature.melspectrogram(y=x, **self.audio_settings)
             x = librosa.power_to_db(x, ref=np.max)
             x = x - np.amin(x)
-            if np.amax(np.abs(x)) > 0:
+            x = np.clip(x,a_min=0,a_max=None)
+            if np.amax(x) > 0:
                 x = x/np.amax(x)
             else:
                 x = x*0
@@ -170,7 +171,8 @@ def cache_item_loader(path: str, sr: int, cache_level: int, audio_settings: dict
         x = librosa.feature.melspectrogram(y=x, **audio_settings)     
         x = librosa.power_to_db(x, ref=np.max)
         x = x - np.amin(x)
-        if np.amax(np.abs(x)) > 0:
+        x = np.clip(x,a_min=0,a_max=None)
+        if np.amax(x) > 0:
             x = x/np.amax(x)
         else:
             x = x*0
