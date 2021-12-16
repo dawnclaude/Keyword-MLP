@@ -169,7 +169,7 @@ class KW_MLP(nn.Module):
 
         self.to_logits = nn.Sequential(
             nn.LayerNorm(dim),
-            Reduce('b n d -> b d', 'mean'),
+            Reduce('b n d -> b d', 'max'),
             nn.Linear(dim, num_classes)
         )
 
